@@ -1,4 +1,4 @@
-[!QDD](http://net.imbe.fr/~emeglecz/images/header.jpg)
+![QDD](http://net.imbe.fr/~emeglecz/images/header.jpg)
 
 
 ## QDD setup on a Linux Machine
