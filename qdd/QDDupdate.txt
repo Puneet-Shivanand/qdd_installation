@@ -1,0 +1,32 @@
+QDD-2.3
+1. Can work with Primer3 version 1 or 2. Set primer3_version to 1 or 2 to choose.
+2. Motifs with circular permutation and reverse complementary sequences grouped together 
+(e.g. AAC for AAC, ACA, CAA, TTG, TGT, and GTT). In earlier version there was a bug 
+in grouping the wrong motifs together, for some of the tri-hexa nucleotide motifs. 
+
+QDD-3.0
+1. Version can run under Galaxy
+1. Can accept contigs as input
+2. Multithreading for BLAST+
+3. Can run RepeatMasker in pipe4
+4. Contamination check against the nt database of NCBI can be run
+either by remote BLAST or by local BLAST is the nt database has been downloaded 
+5. Select One primer pair according to the results of wet-lab tests 
+(previously the lowest primer pair penality was selected)
+
+QDD-3.1
+1. Can accept fastq files as input
+2. Recognises automatically wheter executable name is clustalw or clustalw2
+3. Print out fasta files with 100 bp per line
+4. Windows version can also work with Primer3v2.3.6 (add tag PRIMER_THERMODYNAMIC_PARAMETERS_PATH)
+5. ncbi_tax.pl can be run from any folder in linux
+
+QDD-3.1.1
+Bug corrected: The columns PCR_PRODUCT_SEQ and PCR_PRIMER_ALIGNSCORE in the primer table were erroneous in QDD3.1 
+
+QDD-3.1.2
+1. Calculate the PCR_PRIMER_ALIGNSCORE between the sequences and the primers and not between the PCR product and the primers as previously.
+2. PCR_PRODUCT_SEQ: gives the longest possible PCR product (if multiple exact matches between primers and sequence)
+3. PCR_PRODUCT_SIZE: length of the longest possible PCR product
+4. PRIMER_LEFT_DIST_FROM_MS, PRIMER_RIGHT_DIST_FROM_MS, PRIMER_LEFT_FIRTS_POS, PRIMER_RIGHT_FIRTS_POS, MIN_PRIMER_TARGET_DIST: gives info on the shortest possible PCR product
+

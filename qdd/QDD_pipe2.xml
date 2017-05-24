@@ -1,0 +1,71 @@
+<tool id="qdd_pipe2" name="QDD_pipe2" version="3.1.2">
+  <description>Select unique sequences (consensuses and singletons)</description>
+  <command interpreter="perl">
+	#if $make_cons.cons_select=="1"
+pipe2.pl -make_cons 1 -input_file $input_file -ident_limit $make_cons.ident_limit -prop_maj $make_cons.prop_maj -file_log_pipe2 $log_file -file_singleton $file_singleton -file_nohit_css $file_nohit_css -file_multihit_css $file_multihit_css -file_gr $file_gr -file_consensus $file_consensus -file_cons_subs $file_cons_subs -file_pipe3_inp $file_pipe3_inp >>$screen 2>>$screen
+	#else
+pipe2.pl -make_cons 0 -input_file $input_file -file_log_pipe2 $log_file -file_singleton $file_singleton -file_nohit_css $file_nohit_css -file_multihit_css $file_multihit_css -file_gr $file_gr -file_consensus $file_consensus -file_cons_subs $file_cons_subs -file_pipe3_inp $file_pipe3_inp >>$screen 2>>$screen
+	#end if
+
+</command> 
+
+
+  <inputs>
+    <param format="fasta" name="input_file" type="data" label="Sequences with microsatellites (Output of pipe1)"/>
+	
+	<conditional name="make_cons">
+		<param name="cons_select" type="select" label="Make consensus sequences?" help="If input sequences of pipe2 were extracted from an assembly making consensus sequences does not make sense. Choose NO">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</param>
+		<when value="1">
+    		<param name="ident_limit" type="integer" label="Minimum identity between two sequences to make a consensus (percentage)" value="95" min="80" max="100" help="A sequence is added to a contig if its flanking region similarity to at least one of the existing sequences in the contig is greater than 0.95"/>
+    		<param name="prop_maj" type="float" label="Proportion of sequences that must have the same base on the aligned site to accept it as a consensus" value="0.66" min="0.5" max="1" help="Sequences of the contigs are aligned. For each site, a nucleotide is accepted as a consensus if it is present in more than 66% of the informative bases (not N) on that site" />		
+		</when>
+		<when value="0">
+		</when>
+	</conditional>
+  </inputs>
+
+  <outputs>
+    <data format="txt" name="log_file" type="data" label="pipe2 Log file"/> 
+    <data format="fasta" name="file_singleton" type="data" label="pipe2 Singleton" help="Fasta file of singletons (no similarity to other sequences)" hidden="True"/> 
+    <data format="fasta" name="file_nohit_css" type="data" label="pipe2 Nohit CSS" help="Fasta file of sequences without autohit in BLAST" hidden="True"/> 
+    <data format="fasta" name="file_multihit_css" type="data" label="pipe2 Multihit" help="Fasta file of sequences with putatif criptically simple sequences" hidden="True"/> 
+    <data format="fasta" name="file_gr" type="data" label="pipe2 Grouped" help="Fasta file of groupped sequences" hidden="True"/> 
+    <data format="fasta" name="file_consensus" type="data" label="pipe2 Consensus" help="Fasta file of consensus sequences" hidden="True"/> 
+    <data format="fasta" name="file_cons_subs" type="data" label="pipe2 Cons+reads" help="Fasta file of aligned reads and consensus sequences" hidden="True"/> 
+    <data format="fasta" name="file_pipe3_inp" type="data" label="Input for pipe3" help="Fasta file with all unique sequences (singletons and consensus)"/> 
+    <data format="txt" name="screen" type="data" label="pipe2 Messages on screen" hidden="True"/> 
+  </outputs>
+ 
+
+
+  <help>
+PIPE2: Sequence similarity detection
+
+
+- Sequences are compared by an all-against-all BLAST and sorted according to their similarities into the following categories:
+
+- Singletons => The only BLAST hit is autohit
+
+- Nohit_css => Low complexity sequences (no BLAST hit to itself)
+
+- Multihit => Putative minisatellites (multiple HSP between two sequences)
+
+- Grouped => Sequences (including consensuses) that had BLAST hit to other sequences, with bellow limit identity of the overlaping region. Regions covered by BLAST hits are masked by lower case letters
+
+- Consensus => All unique (no hit to grouped seqs) consensus sequences, Marked as polymorph if polymorphism is detected among the aligned reads
+
+- Cons+reads => Consensus + aligned reads to make a consensus
+
+
+- Input for pipe3 => fasta file with all unique sequences (singletons and consensus)
+
+If input sequences of pipe2 were extracted from an assembly, making consensus sequences does not make sense. Choose no for 'Make consensus sequences?'. In that case fragments are compared by an all-against-all BLAST and only singletons are selected (Nohit_css and Mulitihits sequences are eliminated). 
+
+
+  </help>
+
+</tool>
+

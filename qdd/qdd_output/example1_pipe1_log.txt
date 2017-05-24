@@ -1,0 +1,40 @@
+
+**********************************************************
+QDD version3.1.2 July 2014
+Emese Meglecz, Aix-Marseille University, Marseille, France
+emese.meglecz@imbe.fr
+http://net.imbe.fr/~emeglecz/qdd.html
+**********************************************************
+
+SCRIPT pipe1.pl
+INPUT files:
+	Input file with sequences: data/example1.fas
+
+OUTPUT files:
+String for naming output files: example1
+	./qdd_output/example1_pipe1_for_pipe2.fas : Fasta file with sequences ready for pipe2.pl (i) contain microsatellites (ii) longer than 80 after vector/adapter clipping OR after being extracted from contigs
+	./qdd_output/example1_pipe1_ms.csv : Info on mirosatellite number and position
+
+GENERAL PARAMETERS
+System (win/linux): linux
+Input sequences are already assembled (contigs, scaffolds or chromosomes) (YES=1/NO=0): 1
+Input file is a fastq file (YES=1/NO=0): 0
+Length of the flanking region on both sides of the microsatellite: 200
+Minimum sequence length: 80
+Delete intermediate files (YES=1/NO=0): 1
+Output folder : ./qdd_output/
+Path to QDD executables: ./
+Minimum homopolymer length for microsatellite detection: 1000000
+Minimum repeat number for dibase motifs for microsatellite detection: 5
+Minimum repeat number for tribase motifs for microsatellite detection: 5
+Minimum repeat number for tetrabase motifs for microsatellite detection: 5
+Minimum repeat number for pentabase motifs for microsatellite detection: 5
+Minimum repeat number for hexabase motifs for microsatellite detection: 5
+************************************
+
+10 fragments are extracted from the input sequences
+
+
+pipe1.pl started at : Wed May 24 12:31:55 2017
+The run took 0 s.
+The analysis is finished

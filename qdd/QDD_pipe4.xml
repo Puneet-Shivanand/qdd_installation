@@ -1,0 +1,79 @@
+<tool id="qdd_pipe4" name="QDD_pipe4" version="3.1.2">
+  <description>RepeatMasker run and contamination check</description>
+  <command interpreter="perl">
+	#if $rm.rm_select=="1"
+pipe4.pl -rm 1 -rm_lib $rm.rm_lib -input_file $input_file -check_contamination $check_contamination -local_blast $local_blast -file_log_pipe4 $log_file -file_primers_completed $file_primers_completed >>$screen 2>>$screen
+	#else
+pipe4.pl -rm 0 -input_file $input_file -check_contamination $check_contamination -local_blast $local_blast -file_log_pipe4 $log_file -file_primers_completed $file_primers_completed >>$screen 2>>$screen
+	#end if
+</command>
+
+  <inputs>
+    <param format="tabular" name="input_file" type="data" label="Primer table (Output of pipe3)"/>
+
+	<conditional name="rm">
+		<param name="rm_select" type="select" value="0" label="Do you want to run RepeatMasker to check similarity to known transposable elements?" help="For running RepeatMasker you need to download and install the RepBase of known TEs">
+			<option value="0">no</option>
+			<option value="1">yes</option>
+		</param>
+		<when value="1">
+			<param name="rm_lib" type="select" label="Taxonomic group for TE base" value="eukaryota" help="You need to define a taxonomic group of which the known TEs are selected for comparing them to your sequences" optional="false">	
+				<option value="eukaryota">Eukariota</option>
+				<option value="viridiplantae">Viridiplantae</option>
+				<option value="embryophyta">Embryophyta</option>
+				<option value="spermatophyta">Spermatophyta</option>
+				<option value="fungi">Fungi</option>
+				<option value="metazoa">Metazoa</option>
+				<option value="protostomia">Protostomia</option>
+				<option value="arthropoda">Arthropoda</option>
+			<!--	<option value="nematoda">nematoda</option> -->
+			<!--	<option value="annelida">annelida</option> -->
+			<!--	<option value="mollusca">mollusca</option> -->
+				<option value="deuterostomia">Deuterostomia</option>
+				<option value="chordata">Chordata</option>
+				<option value="teleostomi">Teleostomi</option>
+				<option value="sarcopterygii">Sarcopterygii</option>
+				<option value="tetrapoda">Tetrapoda</option>
+				<option value="mammalia">Mammalia</option>
+			</param>		
+		</when>
+		<when value="0">
+		</when>
+	</conditional>
+
+
+
+    <param name="check_contamination" type="boolean" label="Check contamination" help="BLAST sequences against genbank. This step can be very long."/>
+    <param name="local_blast" type="boolean" label="Use local BLAST to check contamination" help="You can use local BLAST only if the nt database of NCBI has been downloaded to your virtual machine. If it has not been done, remote BLAST can be used (by leaving this box unchecked), but it is slower and need a good internet connection."/>
+  </inputs>
+
+  <outputs>
+    <data format="txt" name="log_file" type="data" label="pipe4 Log file"/> 
+    <data format="tabular" name="file_primers_completed" type="data" label="Table with primers, RepeatMasker and NCBI BLAST hit info" help="Info on sequences, primers, target regions completed by RepeatMasker and NCBI BLAST info"/> 
+    <data format="txt" name="screen" type="data" label="pipe4 Messages on screen" hidden="True"/>
+  </outputs>
+ 
+
+
+  <help>
+
+PIPE4 Contamination check and screen for known transposable elements
+
+The input file is a primer table produced by pipe3. It will be completed in this step by 
+
+- a.) Information on similarity to known Transposable elements detected by the RepeatMasker program. In order to run this option, you need to install the RepBase database freely avaliable to academic users. (see documentattion of QDD)
+
+- b.) Information on the best hit to the NCBI nt datadase. 
+- This step helps to spot serious contamination problems by examining the taxonomic distribution of the best hits from the nt database of NCBI.
+- If you have few sequences with primers, and a good internet connection, you can run a remote BLAST by leaving the 'Use local BLAST to check contamination' box unchecked. Otherwise, it is better to download the nt database from NCBI, and run a local BLAST. (see documentattion of QDD)
+
+- 
+
+-
+
+- 
+
+  </help>
+
+</tool>
+

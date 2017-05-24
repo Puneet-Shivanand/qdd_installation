@@ -1,0 +1,50 @@
+<tool id="qdd_pipe3" name="QDD_pipe3" version="3.1.2">
+  <description>Primer design</description>
+  <command interpreter="perl">
+pipe3.pl -contig $contig -input_file $input_file -pcr_min $pcr_min -pcr_max $pcr_max -PRIMER_OPT_SIZE $PRIMER_OPT_SIZE -PRIMER_MIN_SIZE $PRIMER_MIN_SIZE -PRIMER_MAX_SIZE $PRIMER_MAX_SIZE -PRIMER_OPT_TM $PRIMER_OPT_TM -PRIMER_MIN_TM $PRIMER_MIN_TM -PRIMER_MAX_TM $PRIMER_MAX_TM -PRIMER_MAX_DIFF_TM $PRIMER_MAX_DIFF_TM -PRIMER_GC_CLAMP $PRIMER_GC_CLAMP -PRIMER_MAX_POLY_X $PRIMER_MAX_POLY_X -file_log_pipe3 $log_file -file_primers $file_primers -file_targets $file_targets >>$screen 2>>$screen
+</command>
+
+  <inputs>
+    <param format="fasta" name="input_file" type="data" label="Input fasta file (Output of pipe2)"/>
+    <param name="contig" type="boolean" label="Sequences were extracted from assembly in pipe1?" help="If yes, distance to nearest fragment on the same contig is added to the primer table"/>
+     <param name="pcr_min" type="integer" label="Minimum size of the PCR product" value="90" min="40" max="10000" optional="false"/>
+    <param name="pcr_max" type="integer" label="Maximum size of the PCR product" value="320" min="40" max="10000" optional="false"/>
+    <param name="PRIMER_OPT_SIZE" type="integer" label="Optimum size of the primers" value="20" min="1" max="50" optional="false"/>
+    <param name="PRIMER_MIN_SIZE" type="integer" label="Minimum size of the primers" value="18" min="1" max="50" optional="false"/>
+    <param name="PRIMER_MAX_SIZE" type="integer" label="Maximum size of the primers" value="27" min="1" max="50" optional="false"/>
+    <param name="PRIMER_OPT_TM" type="integer" label="Optimum melting temperature" value="60" min="1" max="100" optional="false"/> 
+    <param name="PRIMER_MIN_TM" type="integer" label="Minimum melting temperature" value="57" min="1" max="100" optional="false"/>
+    <param name="PRIMER_MAX_TM" type="integer" label="Maximum melting temperature" value="63" min="1" max="100" optional="false"/>
+    <param name="PRIMER_MAX_DIFF_TM" type="integer" label="Maximum difference between primer TMs" value="10" min="1" max="100" optional="false"/>
+    <param name="PRIMER_GC_CLAMP" type="integer" label="Minnimum umber of G/C et the 3' end of the primer" value="0" min="0" max="20" optional="false"/>
+    <param name="PRIMER_MAX_POLY_X" type="integer" label="Maximum length of homopolymer in primer" value="3" min="1" max="10" optional="false"/>
+  </inputs>
+
+  <outputs>
+    <data format="txt" name="log_file" type="data" label="pipe3 Log file"/> 
+    <data format="fasta" name="file_targets" type="data" label="Sequences with primers" help="Sequences with successful primer design"/> 
+    <data format="tabular" name="file_primers" type="data" label="Table with primers" help="Info on sequences, primers, target regions"/> 
+    <data format="txt" name="screen" type="data" label="pipe3 Messages on screen" hidden="True"/>
+  </outputs>
+ 
+
+
+  <help>
+
+PIPE3 Primer design step
+
+
+For each sequence primers are designed in an iterative way.
+
+- a.) By increasing size of the PCR products (To force design of primers that have longer products)
+
+- b.) From best to worst scenario for the target region (one single perfect microsatellite => multiple microsatellites, homopolymers, nanosatellites)
+
+- 
+
+- If sequences were extracted from an assembly in pipe1, the distance to the nearest fragment on the contig is calculated
+
+  </help>
+
+</tool>
+

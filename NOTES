@@ -1,0 +1,18 @@
+FOR RUNNING PIPE 4
+1) REGISTER fot repeatmasker using this link and download repeatmaskerlibraries-[version].tar.gz from http://www.girinst.org/server/RepBase/index.php
+	cp ~/Downloads/repeatmaskerlibraries* /your/repo/location/tools/RepeatMasker/
+and type the following commands
+	
+	cd /your/repo/location/tools/RepeatMasker/
+	sudo gunzip repeatmaskerlibraries-*.tar.gz 
+	sudo tar xvf repeatmaskerlibraries-*.tar 
+	sudo rm repeatmaskerlibraries-*.tar
+
+
+
+2) download the nt database from ncbi using this command to the tools/ folder 
+	
+	wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt*
+
+
+	

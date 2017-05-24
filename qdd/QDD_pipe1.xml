@@ -1,0 +1,58 @@
+<tool id="qdd_pipe1" name="QDD_pipe1" version="3.1.2">
+  <description>Microsatellite detection</description>
+  <command interpreter="perl">
+	#if $contig.contig_select=="1"
+	pipe1.pl -contig 1 -flank_length $contig.flank_length -length_limit $seq_l_limit -input_file $input_file -file_log_pipe1 $log_file -file_msfas $file_msfas -file_ms $file_ms >>$screen 2>>$screen
+	#else
+	pipe1.pl -length_limit $seq_l_limit -input_file $input_file -adapter_file $contig.adapter_file -file_log_pipe1 $log_file -file_wov $file_wov -file_length $file_length -file_msfas $file_msfas -file_ms $file_ms >>$screen 2>>$screen
+	#end if
+
+</command> 
+
+  <inputs>
+    <param format="fasta" name="input_file" type="data" label="Input fasta file"/>
+
+
+	<conditional name="contig">
+		<param name="contig_select" type="select" value="0" label="Input sequences are already assembled (contigs/scaffolds/chromosomes)">
+			<option value="0">no</option>
+			<option value="1">yes</option>
+		</param>
+		<when value="1">
+			<param name="flank_length" type="integer" label="Flanking region length" value="200" min="10" max="300" help="Extract microsatellites plus 'Flanking region length' basepairs on both sides of the microsatellite" optional="false"/>			
+		</when>
+		<when value="0">
+ 			<param format="fasta" name="adapter_file" type="data" label="Fasta file with adapter/vector sequences" optional="true" help="This file is necessary only if adapters/vectors have not been previously removed from the sequences"/>			
+		</when>
+	</conditional>
+
+
+    <param name="seq_l_limit" type="integer" label="Sequence length limit" value="80" min="0" max="10000" help="Keep only reads with at least 'Sequence length limit' bases" optional="false"/>
+  </inputs>
+
+  <outputs>
+    <data format="txt" name="log_file" type="data" label="pipe1 Log file"/> 
+    <data format="fasta" name="file_msfas" type="data" label="Input for pipe2" help="Sequences with microsatellites"/> 
+   <data format="tabular" name="file_length" type="data" label="pipe1 Length info" help="Length of sequences before and after clipping" hidden="True"/> 
+    <data format="fasta" name="file_wov" type="data" label="pipe1 Length selected fasta" help="Sequences longer than limit (after adapter/vector clippig)" hidden="True"/> 
+    <data format="csv" name="file_ms" type="data" label="pipe1 Microsatellite positions" hidden="True"/> 
+    <data format="txt" name="screen" type="data" label="pipe1 Messages on screen" hidden="True"/> 
+  </outputs>
+ 
+  <help>
+PIPE1: Sequence preparation and microsatellite detection
+
+If input sequences are already assembled (contigs/scaffolds/chromosomes) the scripts identifies all microsatellites with at least 5 repeats, and extract them with 'Flanking region length' (200 by default) bases of flanking regions on both sides. Information on the position of the fragment in the input sequence is kept in the fragment code. If microsatellites are closer than twice the 'Flanking region length', they are pooled into one fragment. 
+
+
+If input sequences are NOT assembled (reads shorter than 1 kb), the following steps are executed:
+
+- Step 1. (Optional) Remove adaptors/vectors if adapter file is selected. If adapter is not found at the beginning of the sequence, the sequence is removed.
+
+- Step 2. Select sequences longer or equal than 'Sequence length limit' after adapter clipping and trimming.
+
+- Step 3. Select sequences that contain microsatellites.
+  </help>
+
+</tool>
+

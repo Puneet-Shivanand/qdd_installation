@@ -1,0 +1,15 @@
+After downloading this repository cd into qdd/ directory and run these 2 steps
+	
+	ln -s subprogramQDD.pm /etc/perl/subprogramQDD.pm
+	ln -s ncbi_taxonomy.pm /etc/perl/ncbi_taxonomy.pm
+
+To setup qdd in local system link the executables to /etc folder
+cd into /etc folder and run
+	mkdir /etc/qdd
+
+Go back to QDD folder and cd into it link the set_qdd_default.ini to /etc folder using the command
+	ln set_qdd_default.ini /etc/qdd/set_qdd_default.ini
+
+Test if your intallation is correct by running this command inside the qdd folder and check for output files in qdd_out/ folder 
+
+	perl pipe1.pl -input_file data/example1.fas -contig 1
